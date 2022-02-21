@@ -1,1 +1,9 @@
-{% extends "base.html" %} {% block content %} Todos {% endblock %}
+{% extends "base.html" %} {% block content %}
+
+<form method="POST" action="/todos/">
+  {{ form.csrf_token }} {{form.username}} {{form.email}} {{form.text}}
+  <input type="submit" value="Go" />
+</form>
+
+<div>Todos</div>
+{% endblock %}

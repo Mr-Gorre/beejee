@@ -7,13 +7,25 @@
 
         {% block styles %}
             {{ bootstrap.load_css() }}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         {% endblock %}
 
-        <title>Your page title</title>
+        <title>{{title}}</title>
         {% endblock %}
     </head>
     <body>
+
         <div class="container">
+            {% block nav %}
+            <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+            >
+            <div class="col-md-6">BeeJee Todo</div>
+            <div class="col-md-6 text-end">
+                <a type="button" class="btn btn-outline-primary me-2"> Login </a>
+            </div>
+            </header>
+            {% endblock %}
             {% block content %}{% endblock %}
         </div>
 

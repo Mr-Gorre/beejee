@@ -4,6 +4,6 @@ from wtforms.validators import DataRequired
 
 
 class TodoForm(FlaskForm):
-    username = StringField("username", validators=[DataRequired()])
-    email = EmailField("email", validators=[DataRequired()])
-    text = StringField("text", validators=[DataRequired()])
+    username = StringField("Username", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired()])
+    text = StringField("Text", validators=[DataRequired()])

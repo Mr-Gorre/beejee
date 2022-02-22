@@ -1,8 +1,12 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 
 <form method="POST" action="/todos/">
-  {{ form.csrf_token }} {{form.username}} {{form.email}} {{form.text}}
-  <input type="submit" value="Go" />
+  {{form.csrf_token}} 
+  {{form.username}} 
+  {{form.email}} 
+  {{form.text}}
+  <input type="submit" value="submit" class="btn btn-primary" />
 </form>
 
 <h1>Todos:</h1>
@@ -10,15 +14,15 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Username</th>
-      <th scope="col">Email</th>
-      <th scope="col">Text</th>
-      <th scope="col">Status</th>
+        <th scope="col">#</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Text</th>
+        <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
-    {% for todo in todos %}
+    {% for todo in todos.items %}
     <tr>
       <td>{{todo.id}}</td>
       <td>{{todo.username}}</td>
@@ -29,5 +33,32 @@
     {% endfor %}
   </tbody>
 </table>
+<nav class="navbar">
+    <div class="container-fluid">
 
-{% endblock %}
+    <div class="text-left ">
+        Showing page {{ todos.page }} of {{ todos.pages }}
+     </div>
+    <ul class="pagination justify-content-end">
+        {% for page_num in todos.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+
+                <li class="page-item {% if todos.page == page_num %}active{% endif %}">
+                    <a href="{{ url_for('todos.list', page=page_num, order_by=order_by, desc=desc) }}" class="page-link">
+                        {{ page_num }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        ...
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+</nav>
+
+{% endblock%}

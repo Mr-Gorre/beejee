@@ -22,12 +22,17 @@
   <tbody>
     {% for todo in todos.items %}
     <tr>
-      <td>{{todo.id}}</td>
-      <td>{{todo.username}}</td>
-      <td>{{todo.email}}</td>
-      <td>{{todo.text}}</td>
-      <td>{{todo.status}}</td>
-      <td><a href="{{url_for('todos.delete', id=todo.id)}}">x</a></td>
+        <td>{{todo.id}}</td>
+        <td>{{todo.username}}</td>
+        <td>{{todo.email}}</td>
+        <td>{{todo.text}}</td>
+        <td>{{todo.status}}</td>
+        <td>
+            <div class="btn-group">
+                <a href="{{ url_for('todos.edit', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                <a href="{{ url_for('todos.delete', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-trash2"></i></a>
+            </div>
+        </td>
     </tr>
     {% endfor %}
   </tbody>

@@ -1,0 +1,17 @@
+<form method="POST" action="{{action}}">
+
+    {{form.csrf_token}} 
+    <div class="mb-3">
+        {{form.username.label}}
+        {{form.username(class_="form-control")}} 
+    </div>
+    <div class="mb-3">
+        {{form.email.label}}
+        {{form.email(class_="form-control")}} 
+    </div>
+    <div class="mb-3">
+        {{form.text.label}}
+        {{form.text(class_="form-control")}} 
+    </div>
+    <input type="submit" value="submit" class="btn btn-primary" />
+  </form>

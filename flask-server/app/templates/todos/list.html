@@ -1,13 +1,10 @@
 {% extends "base.html" %} 
 {% block content %}
 
-<form method="POST" action="/todos/">
-  {{form.csrf_token}} 
-  {{form.username}} 
-  {{form.email}} 
-  {{form.text}}
-  <input type="submit" value="submit" class="btn btn-primary" />
-</form>
+{% with action=url_for('todos.create')%}
+    {%include "todos/form.html"%}
+{% endwith %}
+<hr>
 
 <h1>Todos:</h1>
 

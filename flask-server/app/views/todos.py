@@ -9,11 +9,23 @@ todos = Blueprint('todos', __name__)
 
 
 @todos.route('/')
-@todos.route('/todos/')
+@todos.route('/todos/', methods=['GET', 'POST'])
 def list():
+
+    form = TodoForm()
     order = request.args.get('order_by')
     order_desc = request.args.get('desc', type= lambda x: x.lower() == "true")
     page = request.args.get('page', type=int, default=1)
+
+    if form.validate_on_submit():
+        username = request.form['username']
+        email = request.form['email']
+        text = request.form['text']
+        todo = Todo(username=username, email=email, text=text)
+        db.session.add(todo)
+        db.session.commit()
+        return redirect(url_for('todos.list', page=page, order_by=order))
+
     #TODO: hmmm
     orders = {
         'id': Todo.id,
@@ -24,26 +36,9 @@ def list():
     }
     ordered_column = orders[order] if order in orders else orders['id']
     direction = desc if order_desc else asc
-
-    form = TodoForm()
     todos = Todo.query.order_by(
         direction(ordered_column)).paginate(page, PAGE_SIZE, False)
     return render_template('todos/list.html', form=form, todos=todos, order_by=order, desc=order_desc)
-
-
-@todos.route('/todos/', methods=['POST'])
-def create():
-    form = TodoForm(request.form)
-    if form.validate_on_submit():
-        username = request.form['username']
-        email = request.form['email']
-        text = request.form['text']
-        todo = Todo(username=username, email=email, text=text)
-        db.session.add(todo)
-        db.session.commit()
-        return redirect(redirect_url('todos.list'))
-    return render_template('todos/list.html', form=form)
-
 
 @todos.route('/todos/<id>')
 def detail(id):

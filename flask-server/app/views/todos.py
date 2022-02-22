@@ -12,7 +12,7 @@ todos = Blueprint('todos', __name__)
 @todos.route('/todos/')
 def list():
     order = request.args.get('order_by')
-    order_desc = request.args.get('desc', default=False, type= lambda x: x.lower() == "true")
+    order_desc = request.args.get('desc', type= lambda x: x.lower() == "true")
     page = request.args.get('page', type=int, default=1)
     #TODO: hmmm
     orders = {
@@ -41,7 +41,7 @@ def create():
         todo = Todo(username=username, email=email, text=text)
         db.session.add(todo)
         db.session.commit()
-        return redirect('/todos/')
+        return redirect(redirect_url('todos.list'))
     return render_template('todos/list.html', form=form)
 
 

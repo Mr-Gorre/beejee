@@ -19,6 +19,7 @@
         <th scope="col">Email</th>
         <th scope="col">Text</th>
         <th scope="col">Status</th>
+        <th scope="col">Control</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +30,7 @@
       <td>{{todo.email}}</td>
       <td>{{todo.text}}</td>
       <td>{{todo.status}}</td>
+      <td><a href="{{url_for('todos.delete', id=todo.id)}}">x</a></td>
     </tr>
     {% endfor %}
   </tbody>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="alert alert-success" role="alert">
+        {{todo.id}} - todo removed!
+    </div>
+    <div>
+        <a href="{{back_url}}" class="btn btn-primary">Back</a> 
+        <small class="text-muted">redirect after 3 sec</small>
+    </div>
+    <script>    
+        function redirect_back () {
+            var tID = setTimeout(function () {
+                window.location.href = "{{back_url}}";
+                window.clearTimeout(tID);		
+            }, 3000);
+        }
+        redirect_back();
+    </script>
+{% endblock %}

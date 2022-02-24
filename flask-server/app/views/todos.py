@@ -9,14 +9,15 @@ todos = Blueprint('todos', __name__)
 
 
 @todos.route('/')
+def index():
+    return redirect(url_for('todos.list'))
+
+
 @todos.route('/todos/', methods=['GET', 'POST'])
 def list():
+    success = False
 
     form = TodoForm()
-    order = request.args.get('order_by')
-    order_desc = request.args.get('desc', type= lambda x: x.lower() == "true")
-    page = request.args.get('page', type=int, default=1)
-
     if form.validate_on_submit():
         username = request.form['username']
         email = request.form['email']
@@ -24,9 +25,15 @@ def list():
         todo = Todo(username=username, email=email, text=text)
         db.session.add(todo)
         db.session.commit()
-        return redirect(url_for('todos.list', page=page, order_by=order))
+        form.username.data = ''
+        form.email.data = ''
+        form.text.data = ''
+        success = True
 
-    #TODO: hmmm
+    order = request.args.get('order_by')
+    order_desc = request.args.get('desc', type=lambda x: x.lower() == "true")
+    page = request.args.get('page', type=int, default=1)
+
     orders = {
         'id': Todo.id,
         'username': Todo.username,
@@ -36,9 +43,11 @@ def list():
     }
     ordered_column = orders[order] if order in orders else orders['id']
     direction = desc if order_desc else asc
+
     todos = Todo.query.order_by(
         direction(ordered_column)).paginate(page, PAGE_SIZE, False)
-    return render_template('todos/list.html', form=form, todos=todos, order_by=order, desc=order_desc)
+    return render_template('todos/list.html', form=form, todos=todos, order_by=order, desc=order_desc, success=success)
+
 
 @todos.route('/todos/<id>')
 def detail(id):
@@ -47,16 +56,27 @@ def detail(id):
 
 @todos.route('/todos/<id>/edit', methods=['POST', 'GET'])
 def edit(id):
-    return render_template('todos/edit.html')
+    todo = Todo.query.get_or_404(id)
+    form = TodoForm(obj=todo)
+    if form.validate_on_submit():
+        todo.username = request.form['username']
+        todo.email = request.form['email']
+        todo.text = request.form['text']
+
+        db.session.add(todo)
+        db.session.commit()
+        return render_template('todos/edit.html', form=form, todo=todo, success=True)
+    return render_template('todos/edit.html', form=form, todo=todo)
+
 
 @todos.route('/todos/<id>/remove')
 def delete(id):
     todo = Todo.query.get_or_404(id)
     db.session.delete(todo)
     db.session.commit()
-    back_url = redirect_url('todos.list')
+    back_url = back_url(default='todos.list')
     return render_template('todos/delete.html', title=f"Remove {id}", todo=todo, back_url=back_url)
 
 
-def redirect_url(default='index'):
+def back_url(default='index'):
     return request.referrer or url_for(default)

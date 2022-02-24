@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block content %}
+{% if success %}
+<div class="alert alert-success" role="alert">
+    Successfuly edited;
+</div>
+{% endif %}
+<div>
+    <a href="{{ url_for('todos.list') }}" class="btn btn-primary">Main</a>
+</div>
+<h1>Edit: {{todo.id}}</h1>
+<hr>
+{{ render_form(form) }}
+{% endblock %}

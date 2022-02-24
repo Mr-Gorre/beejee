@@ -1,11 +1,12 @@
+from flask_login import UserMixin
 from app import db
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     password = db.Column(db.String(100))
-    name = db.Column(db.String(1000), unique=True)
+    username = db.Column(db.String(1000), unique=True)
 
 
 class Todo(db.Model):

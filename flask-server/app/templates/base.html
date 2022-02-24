@@ -20,9 +20,17 @@
             <header
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
             >
-            <div class="col-md-6">BeeJee Todo</div>
+            <div class="col-md-6">
+                <a href="{{url_for('todos.index')}}" class="btn">
+                    BeeJee Todo
+                </a>
+            </div>
             <div class="col-md-6 text-end">
-                <a type="button" class="btn btn-outline-primary me-2"> Login </a>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-primary me-2">Logout</a>
+                {% else %}
+                <a href="{{ url_for('auth.login') }}" type="button" class="btn btn-outline-primary me-2"> Login </a>
+                {% endif %}
             </div>
             </header>
             {% endblock %}

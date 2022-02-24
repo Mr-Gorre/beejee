@@ -14,4 +14,4 @@ class Todo(db.Model):
     username = db.Column(db.String(100))
     email = db.Column(db.String(100))
     text = db.Column(db.String(1000))
-    status = db.Column(db.Integer(), default=0)
+    status = db.Column(db.Boolean, default=False)

@@ -8,9 +8,10 @@
     Successfuly created!
 </div>
 {% endif %}
+{% if current_user.is_authenticated %}
 {{ render_form(form) }}
-
 <hr>
+{% endif %}
 
 <h1>Todos:</h1>
 
@@ -22,7 +23,9 @@
                 {% include "todos/th.html" %}
             {% endwith %}
         {% endfor %}
+        {% if current_user.is_authenticated %}
         <th scope="col">Control</th>
+        {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -41,12 +44,14 @@
                 {% endif %}
             </a>
         </td>
+        {% if current_user.is_authenticated %}
         <td>
             <div class="btn-group">
                 <a href="{{ url_for('todos.edit', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
                 <a href="{{ url_for('todos.delete', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-trash2"></i></a>
             </div>
         </td>
+        {% endif %}
     </tr>
     {% endfor %}
   </tbody>

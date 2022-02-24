@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, url_for
+from flask_login import login_required
 from sqlalchemy import asc, desc
 from app import db
 from app.forms import TodoForm
@@ -56,12 +57,8 @@ def list():
     return render_template('todos/list.html', form=form, todos=todos, cols=cols, order_by=order, desc=order_desc, success=success)
 
 
-@todos.route('/todos/<id>')
-def detail(id):
-    return render_template('todos/detail.html')
-
-
 @todos.route('/todos/<id>/edit', methods=['POST', 'GET'])
+@login_required
 def edit(id):
     todo = Todo.query.get_or_404(id)
     form = TodoForm(obj=todo)
@@ -77,6 +74,7 @@ def edit(id):
 
 
 @todos.route('/todos/<id>/remove')
+@login_required
 def delete(id):
     todo = Todo.query.get_or_404(id)
     db.session.delete(todo)
@@ -85,6 +83,7 @@ def delete(id):
     return render_template('todos/delete.html', title=f"Remove {id}", todo=todo, back_url=back_url)
 
 @todos.route('/todos/<id>/toggle')
+@login_required
 def toggle(id):
     todo = Todo.query.get_or_404(id)
     todo.status = not todo.status

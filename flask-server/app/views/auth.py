@@ -18,7 +18,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(request.args['next'] or  url_for('todos.index'))
+            return redirect(request.args.get('next') or  url_for('todos.index'))
         else:
             login_failed = True
     return render_template("auth/login.html", title="Login Form", form=form, login_failed=login_failed)

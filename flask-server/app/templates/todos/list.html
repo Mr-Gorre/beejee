@@ -17,11 +17,11 @@
 <table class="table">
   <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">Username</th>
-        <th scope="col">Email</th>
-        <th scope="col">Text</th>
-        <th scope="col">Status</th>
+        {% for col, text in cols.items() %}
+            {% with col_name=col, col_text=text %}
+                {% include "todos/th.html" %}
+            {% endwith %}
+        {% endfor %}
         <th scope="col">Control</th>
     </tr>
   </thead>

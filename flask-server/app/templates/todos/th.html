@@ -1,0 +1,7 @@
+<th scope="col">
+    {% if order_by == col_name and not desc %}
+        <a href="{{url_for('todos.list', page=page, order_by=col_name, desc=True)}}" class="btn">{{col_text}}</a>
+    {% else %}
+        <a href="{{url_for('todos.list', page=page, order_by=col_name)}}" class="btn">{{col_text}}</a>
+    {% endif %}
+</th>

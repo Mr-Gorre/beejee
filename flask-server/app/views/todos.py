@@ -41,12 +41,19 @@ def list():
         'text': Todo.text,
         'status': Todo.status
     }
+    cols = {
+        'id': "#",
+        'username': "Username",
+        'email': "Email",
+        'text': "Text",
+        'status': "Status"
+    }
     ordered_column = orders[order] if order in orders else orders['id']
     direction = desc if order_desc else asc
 
     todos = Todo.query.order_by(
         direction(ordered_column)).paginate(page, PAGE_SIZE, False)
-    return render_template('todos/list.html', form=form, todos=todos, order_by=order, desc=order_desc, success=success)
+    return render_template('todos/list.html', form=form, todos=todos, cols=cols, order_by=order, desc=order_desc, success=success)
 
 
 @todos.route('/todos/<id>')

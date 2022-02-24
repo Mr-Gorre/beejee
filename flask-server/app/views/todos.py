@@ -84,6 +84,15 @@ def delete(id):
     back_url = back_url(default='todos.list')
     return render_template('todos/delete.html', title=f"Remove {id}", todo=todo, back_url=back_url)
 
+@todos.route('/todos/<id>/toggle')
+def toggle(id):
+    todo = Todo.query.get_or_404(id)
+    todo.status = not todo.status
+    db.session.add(todo)
+    db.session.commit()
+    return redirect(back_url('todos.list'))
+
+
 
 def back_url(default='index'):
     return request.referrer or url_for(default)

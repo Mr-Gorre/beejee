@@ -1,5 +1,4 @@
-venv
-.vscode
-__pycache__
-app.db
-db_repository*
+.git
+**/__pycache__
+**/app.db
+**/db_repository

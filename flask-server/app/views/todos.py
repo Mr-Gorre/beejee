@@ -54,7 +54,7 @@ def list():
 
     todos = Todo.query.order_by(
         direction(ordered_column)).paginate(page, PAGE_SIZE, False)
-    return render_template('todos/list.html', form=form, todos=todos, cols=cols, order_by=order, desc=order_desc, success=success)
+    return render_template('todos/list.html', form=form, todos=todos, cols=cols, order_by=order, desc=order_desc, success=success, title='BeeJee Todo')
 
 
 @todos.route('/todos/<id>/edit', methods=['POST', 'GET'])
@@ -62,6 +62,7 @@ def list():
 def edit(id):
     todo = Todo.query.get_or_404(id)
     form = TodoForm(obj=todo)
+    success=False
     if form.validate_on_submit():
         todo.username = request.form['username']
         todo.email = request.form['email']
@@ -69,8 +70,8 @@ def edit(id):
 
         db.session.add(todo)
         db.session.commit()
-        return render_template('todos/edit.html', form=form, todo=todo, success=True)
-    return render_template('todos/edit.html', form=form, todo=todo)
+        success = True
+    return render_template('todos/edit.html', form=form, todo=todo, success=success, title=f'BeeJee Edit {id} Todo')
 
 
 @todos.route('/todos/<id>/remove')
@@ -79,8 +80,8 @@ def delete(id):
     todo = Todo.query.get_or_404(id)
     db.session.delete(todo)
     db.session.commit()
-    back_url = back_url(default='todos.list')
-    return render_template('todos/delete.html', title=f"Remove {id}", todo=todo, back_url=back_url)
+    url = back_url(default='todos.list')
+    return render_template('todos/delete.html', title=f"Remove {id}", todo=todo, back_url=url)
 
 @todos.route('/todos/<id>/toggle')
 @login_required

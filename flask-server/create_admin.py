@@ -2,8 +2,9 @@ from app.models import User
 from app import db, create_app
 from werkzeug.security import generate_password_hash
 
-def main():
-    app = create_app()
+
+def create_admin(app=None):
+    app = app or create_app()
     app.app_context().push()
     admin = User.query.filter_by(username='Admin').first()
     if admin is None:
@@ -13,4 +14,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    create_admin()

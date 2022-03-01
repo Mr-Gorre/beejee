@@ -35,17 +35,26 @@
         <td>{{todo.email}}</td>
         <td>{{todo.text}}</td>
         <td>
-            <a href="{{ url_for('todos.toggle', id=todo.id) }}" class="btn">
-                {% if todo.status %}
-                <i class="bi bi-check2-square"></i>
-                {% else %}
-                <i class="bi bi-square"></i>
-                {% endif %}
-            </a>
+            {% if todo.status %}
+                Done
+            {% else %}
+                In proccess
+            {% endif %}
+            {% if todo.changed %}
+            <hr>
+            Edited by admin
+            {% endif %}
         </td>
         {% if current_user.is_authenticated %}
         <td>
             <div class="btn-group">
+                <a href="{{ url_for('todos.toggle', id=todo.id) }}" class="btn btn-outline-secondary">
+                    {% if todo.status %}
+                    <i class="bi bi-check2-square"></i>
+                    {% else %}
+                    <i class="bi bi-square"></i>
+                    {% endif %}
+                </a>
                 <a href="{{ url_for('todos.edit', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
                 <a href="{{ url_for('todos.delete', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-trash2"></i></a>
             </div>

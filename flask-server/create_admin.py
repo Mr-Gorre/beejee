@@ -6,9 +6,9 @@ from werkzeug.security import generate_password_hash
 def create_admin(app=None):
     app = app or create_app()
     app.app_context().push()
-    admin = User.query.filter_by(username='Admin').first()
+    admin = User.query.filter_by(username='admin').first()
     if admin is None:
-        admin = User(username="Admin", password=generate_password_hash("123"))
+        admin = User(username="admin", password=generate_password_hash("123"))
         db.session.add(admin)
         db.session.commit()
 

@@ -33,16 +33,18 @@
         <td>{{todo.id}}</td>
         <td>{{todo.username}}</td>
         <td>{{todo.email}}</td>
-        <td>{{todo.text}}</td>
+        <td>
+            {{todo.text}}
+            {% if todo.changed %}
+                <hr>
+                Edited by admin
+            {% endif %}
+        </td>
         <td>
             {% if todo.status %}
                 Done
             {% else %}
                 In proccess
-            {% endif %}
-            {% if todo.changed %}
-            <hr>
-            Edited by admin
             {% endif %}
         </td>
         {% if current_user.is_authenticated %}

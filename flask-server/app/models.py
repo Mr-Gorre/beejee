@@ -16,3 +16,4 @@ class Todo(db.Model):
     email = db.Column(db.String(100))
     text = db.Column(db.String(1000))
     status = db.Column(db.Boolean, default=False)
+    changed = db.Column(db.Boolean, default=False)

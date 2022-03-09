@@ -66,6 +66,8 @@ def edit(id):
     if form.validate_on_submit():
         todo.username = request.form['username']
         todo.email = request.form['email']
+        if todo.text != request.form['text']:
+            todo.changed = True
         todo.text = request.form['text']
 
         db.session.add(todo)

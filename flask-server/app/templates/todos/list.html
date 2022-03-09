@@ -8,10 +8,9 @@
     Successfuly created!
 </div>
 {% endif %}
-{% if current_user.is_authenticated %}
+
 {{ render_form(form) }}
 <hr>
-{% endif %}
 
 <h1>Todos:</h1>
 
@@ -34,19 +33,30 @@
         <td>{{todo.id}}</td>
         <td>{{todo.username}}</td>
         <td>{{todo.email}}</td>
-        <td>{{todo.text}}</td>
         <td>
-            <a href="{{ url_for('todos.toggle', id=todo.id) }}" class="btn">
-                {% if todo.status %}
-                <i class="bi bi-check2-square"></i>
-                {% else %}
-                <i class="bi bi-square"></i>
-                {% endif %}
-            </a>
+            {{todo.text}}
+            {% if todo.changed %}
+                <hr>
+                Edited by admin
+            {% endif %}
+        </td>
+        <td>
+            {% if todo.status %}
+                Done
+            {% else %}
+                In proccess
+            {% endif %}
         </td>
         {% if current_user.is_authenticated %}
         <td>
             <div class="btn-group">
+                <a href="{{ url_for('todos.toggle', id=todo.id) }}" class="btn btn-outline-secondary">
+                    {% if todo.status %}
+                    <i class="bi bi-check2-square"></i>
+                    {% else %}
+                    <i class="bi bi-square"></i>
+                    {% endif %}
+                </a>
                 <a href="{{ url_for('todos.edit', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
                 <a href="{{ url_for('todos.delete', id=todo.id) }}" class="btn btn-outline-secondary"><i class="bi bi-trash2"></i></a>
             </div>
@@ -56,32 +66,30 @@
     {% endfor %}
   </tbody>
 </table>
-<nav class="navbar">
-    <div class="container-fluid">
-
-    <div class="text-left ">
-        Showing page {{ todos.page }} of {{ todos.pages }}
-     </div>
-    <ul class="pagination justify-content-end">
-        {% for page_num in todos.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
-            {% if page_num %}
-
-                <li class="page-item {% if todos.page == page_num %}active{% endif %}">
-                    <a href="{{ url_for('todos.list', page=page_num, order_by=order_by, desc=desc) }}" class="page-link">
-                        {{ page_num }}
-                    </a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <a class="page-link">
-                        ...
-                    </a>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-</div>
-
-</nav>
-
+{% if todos.pages > 1 %}
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="text-left ">
+                Showing page {{ todos.page }} of {{ todos.pages }}
+            </div>
+            <ul class="pagination justify-content-end">
+                {% for page_num in todos.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if page_num %}
+                        <li class="page-item {% if todos.page == page_num %}active{% endif %}">
+                            <a href="{{ url_for('todos.list', page=page_num, order_by=order_by, desc=desc) }}" class="page-link">
+                                {{ page_num }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link">
+                                ...
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>  
+    </nav>
+{% endif %}
 {% endblock%}
